@@ -1,0 +1,14 @@
+# Entorno virtual de Python
+venv/
+.venv/
+env/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+
+# Secretos locales (¡No subir a Git!)
+.env
+
+# IDEs
+.vscode/

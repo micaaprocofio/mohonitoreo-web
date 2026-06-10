@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Principal - Entrada a Mohonitoreo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f1f5f9;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar-custom {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            padding: 16px 0;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.25);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-soft {
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            color: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-top: 28px;
+            box-shadow: 0 18px 40px rgba(15, 118, 110, 0.25);
+        }
+
+        .hero h2 {
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .hero p {
+            margin: 8px 0 0;
+            opacity: 0.9;
+        }
+
+        .status-alert {
+            border: none;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-top: 22px;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+        }
+
+        .metric-card {
+            border: none;
+            border-radius: 22px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 35px rgba(15, 23, 42, 0.13);
+        }
+
+        .metric-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin: 0 auto 14px;
+        }
+
+        .icon-temp {
+            background: #fee2e2;
+        }
+
+        .icon-hum {
+            background: #dbeafe;
+        }
+
+        .icon-state {
+            background: #dcfce7;
+        }
+
+        .metric-title {
+            color: #64748b;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 40px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .sensor-label {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .estado-box {
+            border-radius: 22px;
+        }
+
+        .estado-text {
+            font-size: 36px;
+            font-weight: 900;
+        }
+
+        .update-card {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .footer-note {
+            color: #94a3b8;
+            font-size: 13px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-buttons {
+                margin-top: 12px;
+            }
+
+            .btn-soft {
+                margin-top: 6px;
+            }
+
+            .metric-value {
+                font-size: 32px;
+            }
+
+            .estado-text {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-dark navbar-custom">
+    <div class="container d-flex flex-column flex-md-row align-items-md-center justify-content-md-between">
+        <span class="navbar-brand">🌡️ Sistema Mohonitoreo</span>
+
+        <div class="navbar-buttons">
+            {% if session.get("usuario_rol") == "admin" %}
+                <a href="/admin/usuarios" class="btn btn-warning btn-sm btn-soft">
+                    Admin
+                </a>
+
+                <a href="/admin/dispositivos" class="btn btn-info btn-sm btn-soft">
+                    Dispositivos
+                </a>
+            {% endif %}
+
+            <a href="/historial" class="btn btn-outline-light btn-sm btn-soft">
+                Historial
+            </a>
+
+            <a href="/logout" class="btn btn-danger btn-sm btn-soft">
+                Cerrar sesión
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="hero">
+        <h2>Panel principal</h2>
+        <p>
+            Bienvenido, <strong>{{ nombre }}</strong>.
+            Monitoreo ambiental en tiempo real.
+        </p>
+    </div>
+
+    <div id="alertaDatos" class="alert alert-secondary status-alert">
+        Cargando datos...
+    </div>
+
+    <div class="row g-4 mt-1">
+
+        <div class="col-md-4">
+            <div class="card metric-card">
+                <div class="card-body text-center p-4">
+                    <div class="metric-icon icon-temp">🌡️</div>
+                    <div class="metric-title">Temperatura actual</div>
+                    <div id="temperatura" class="metric-value">-- °C</div>
+                    <div class="sensor-label">Sensor conectado al pin 8</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card metric-card">
+                <div class="card-body text-center p-4">
+                    <div class="metric-icon icon-hum">💧</div>
+                    <div class="metric-title">Humedad actual</div>
+                    <div id="humedad" class="metric-value">-- %</div>
+                    <div class="sensor-label">Sensor conectado al pin 10</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div id="cardEstado" class="card metric-card estado-box border-secondary">
+                <div class="card-body text-center p-4">
+                    <div id="estadoIcono" class="metric-icon icon-state">✅</div>
+                    <div class="metric-title">Estado de humedad</div>
+                    <div id="estado" class="estado-text text-secondary">--</div>
+                    <div id="mensajeEstado" class="sensor-label mt-2">
+                        Esperando lectura...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card update-card mt-4">
+        <div class="card-body p-4">
+            <h5 class="mb-1">Última actualización</h5>
+            <p id="timestamp" class="mb-0 text-muted">--</p>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        El panel se actualiza automáticamente cada 5 segundos.
+    </div>
+
+</div>
+
+<script>
+    function iconoPorEstado(estado) {
+        if (estado === "ALTA") {
+            return "⚠️";
+        }
+
+        if (estado === "NORMAL") {
+            return "✅";
+        }
+
+        if (estado === "BAJA") {
+            return "⚠️";
+        }
+
+        return "❔";
+    }
+
+    async function cargarUltimaLectura() {
+        try {
+            const respuesta = await fetch("/api/ultima_lectura", {
+                credentials: "same-origin"
+            });
+
+            if (!respuesta.ok) {
+                throw new Error("HTTP " + respuesta.status);
+            }
+
+            const data = await respuesta.json();
+
+            const alertaDatos = document.getElementById("alertaDatos");
+
+            if (!data.hay_datos) {
+                alertaDatos.className = "alert alert-warning status-alert";
+                alertaDatos.innerText = data.mensaje;
+
+                document.getElementById("temperatura").innerText = "-- °C";
+                document.getElementById("humedad").innerText = "-- %";
+                document.getElementById("estado").innerText = "--";
+                document.getElementById("mensajeEstado").innerText = "Sin lecturas para este usuario.";
+                document.getElementById("timestamp").innerText = "--";
+                document.getElementById("estadoIcono").innerText = "❔";
+
+                return;
+            }
+
+            document.getElementById("temperatura").innerText =
+                data.temperatura.toFixed(1) + " °C";
+
+            document.getElementById("humedad").innerText =
+                data.humedad.toFixed(1) + " %";
+
+            document.getElementById("estado").innerText =
+                data.estado_humedad;
+
+            document.getElementById("mensajeEstado").innerText =
+                data.mensaje;
+
+            document.getElementById("timestamp").innerText =
+                data.timestamp;
+
+            document.getElementById("estadoIcono").innerText =
+                iconoPorEstado(data.estado_humedad);
+
+            if (data.desactualizado) {
+                alertaDatos.className = "alert alert-warning status-alert";
+                alertaDatos.innerText =
+                    data.mensaje_desactualizado ||
+                    "Los datos no se actualizan hace más de 1 minuto.";
+            } else {
+                alertaDatos.className = "alert alert-info status-alert";
+                alertaDatos.innerText = "Datos actualizados correctamente.";
+            }
+
+            const cardEstado = document.getElementById("cardEstado");
+            cardEstado.className = "card metric-card estado-box border-" + data.color;
+
+            const estado = document.getElementById("estado");
+            estado.className = "estado-text text-" + data.color;
+
+        } catch (error) {
+            const alertaDatos = document.getElementById("alertaDatos");
+            alertaDatos.className = "alert alert-danger status-alert";
+            alertaDatos.innerText = "Error al cargar datos del servidor.";
+            console.error(error);
+        }
+    }
+
+    cargarUltimaLectura();
+    setInterval(cargarUltimaLectura, 5000);
+</script>
+
+</body>
+</html>
