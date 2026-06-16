@@ -1,30 +1,38 @@
 import { Link } from 'react-router-dom'
 
+const ThermometerIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round">
+    <path d="M14 14.76V5a2 2 0 0 0-4 0v9.76a4 4 0 1 0 4 0Z" />
+  </svg>
+)
+
 export function MenuPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-slateDark via-brand-slate to-brand-tealDark p-4">
-      <div className="w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl">
-        <div className="bg-gradient-to-br from-brand-teal to-brand-tealDark p-9 text-center text-white">
-          <h1 className="text-2xl font-extrabold">🌡️ Entrada a Mohonitoreo</h1>
-          <p className="mt-2 opacity-90">Monitoreo de temperatura y humedad</p>
+    <div className="min-h-screen bg-brand-bg flex items-center justify-center p-6">
+      <div
+        className="bg-white border border-brand-borderStrong rounded-xl shadow-card w-full max-w-xs flex flex-col items-center justify-center gap-0 text-center"
+        style={{ padding: '36px' }}
+      >
+        <div className="w-14 h-14 rounded-2xl bg-brand-accent flex items-center justify-center mb-5">
+          <ThermometerIcon />
         </div>
 
-        <div className="space-y-3 p-8">
+        <h1 className="text-[26px] font-bold tracking-tight text-brand-ink mb-2">Mohonitoreo</h1>
+        <p className="text-sm text-brand-subtle mb-6">Sistema de monitoreo ambiental</p>
+
+        <div className="flex flex-col gap-2.5 w-full">
           <Link
             to="/login"
-            className="block rounded-2xl bg-brand-teal py-4 text-center text-lg font-bold text-white transition hover:bg-brand-tealDark"
+            className="w-full text-center text-sm font-semibold bg-brand-accent text-white rounded-[10px] py-3 hover:opacity-90 transition-opacity"
           >
             Iniciar sesión
           </Link>
           <Link
             to="/signup"
-            className="block rounded-2xl border-2 border-slate-800 py-4 text-center text-lg font-bold text-slate-800 transition hover:bg-slate-50"
+            className="w-full text-center text-sm font-semibold border border-brand-accent text-brand-accent bg-white rounded-[10px] py-3 hover:bg-brand-accentLight transition-colors"
           >
             Crear cuenta
           </Link>
-          <p className="pt-2 text-center text-sm text-slate-500">
-            Si ya tenés cuenta, entrá en Iniciar sesión. Si es tu primera vez, usá “Crear cuenta”.
-          </p>
         </div>
       </div>
     </div>

@@ -2,10 +2,10 @@ import { cn } from '../../lib/cn'
 import type { ColorEstado } from '../../features/lecturas/estado'
 
 const tones: Record<ColorEstado, string> = {
-  danger: 'bg-red-100 text-red-700',
-  success: 'bg-emerald-100 text-emerald-700',
-  warning: 'bg-amber-100 text-amber-700',
-  secondary: 'bg-slate-100 text-slate-600',
+  success:   'text-brand-ok bg-brand-okLight',
+  warning:   'text-brand-warning bg-brand-warningLight',
+  danger:    'text-brand-danger bg-brand-dangerLight',
+  secondary: 'text-brand-subtle bg-brand-border',
 }
 
 export function Badge({
@@ -16,7 +16,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        'inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide',
+        'inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-xs font-semibold',
         tones[tone],
         className,
       )}

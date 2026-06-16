@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
-import { Button } from '../components/ui/Button'
 import { Input, Label } from '../components/ui/Input'
 import { Alert } from '../components/ui/Alert'
 
@@ -41,41 +40,70 @@ export function SignupPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-slateDark via-brand-slate to-brand-tealDark p-4">
-      <div className="w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl">
-        <div className="bg-gradient-to-br from-brand-teal to-brand-tealDark p-8 text-center text-white">
-          <h1 className="text-2xl font-extrabold">Crear cuenta</h1>
-        </div>
-        <form className="space-y-4 p-8" onSubmit={handleSubmit}>
-          {error && <Alert tone="danger">{error}</Alert>}
-          {ok && <Alert tone="success">¡Cuenta creada! Redirigiendo al inicio de sesión…</Alert>}
-          <div>
-            <Label htmlFor="cedula">Cédula</Label>
-            <Input id="cedula" value={cedula} onChange={(e) => setCedula(e.target.value)} />
-          </div>
-          <div>
-            <Label htmlFor="nombre">Nombre</Label>
-            <Input id="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-          </div>
-          <div>
-            <Label htmlFor="contrasena">Contraseña</Label>
-            <Input
-              id="contrasena"
-              type="password"
-              value={contrasena}
-              onChange={(e) => setContrasena(e.target.value)}
-            />
-          </div>
-          <Button type="submit" className="w-full" disabled={enviando || ok}>
-            {enviando ? 'Creando…' : 'Crear cuenta'}
-          </Button>
-          <p className="text-center text-sm text-slate-500">
+    <div className="min-h-screen bg-brand-bg flex items-center justify-center p-6">
+      <div className="bg-white border border-brand-borderStrong rounded-xl shadow-card w-full max-w-sm">
+        <div className="px-9 py-8">
+          <h2 className="text-[22px] font-bold tracking-tight text-brand-ink mb-1">Crear cuenta</h2>
+          <p className="text-sm text-brand-subtle mb-6">
+            Registrate para acceder al sistema.
+          </p>
+
+          {error && <Alert tone="danger" className="mb-5">{error}</Alert>}
+          {ok && <Alert tone="success" className="mb-5">¡Cuenta creada! Redirigiendo...</Alert>}
+
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <div>
+              <Label htmlFor="cedula">Cédula</Label>
+              <Input
+                id="cedula"
+                autoFocus
+                placeholder="0.000.000-0"
+                value={cedula}
+                onChange={(e) => setCedula(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="nombre">Nombre completo</Label>
+              <Input
+                id="nombre"
+                placeholder="Nombre y apellido"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="contrasena">Contraseña</Label>
+              <Input
+                id="contrasena"
+                type="password"
+                placeholder="Mínimo 6 caracteres"
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
+                required
+                minLength={6}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={enviando || ok}
+              className="mt-2 w-full rounded-[10px] bg-brand-accent py-3 text-sm font-semibold text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {enviando ? 'Creando cuenta...' : ok ? '¡Cuenta creada!' : 'Crear cuenta'}
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-brand-subtle">
             ¿Ya tenés cuenta?{' '}
-            <Link to="/login" className="font-semibold text-brand-tealDark">
+            <Link to="/login" className="font-semibold text-brand-accent hover:underline">
               Iniciar sesión
             </Link>
           </p>
-        </form>
+        </div>
       </div>
     </div>
   )

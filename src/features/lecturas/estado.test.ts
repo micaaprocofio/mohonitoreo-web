@@ -8,26 +8,30 @@ import {
 
 describe('clasificarHumedad', () => {
   it('classifies at the boundaries', () => {
-    expect(clasificarHumedad(70)).toBe('ALTA')
-    expect(clasificarHumedad(69)).toBe('NORMAL')
-    expect(clasificarHumedad(40)).toBe('NORMAL')
-    expect(clasificarHumedad(39)).toBe('BAJA')
+    expect(clasificarHumedad(85)).toBe('Crítico')
+    expect(clasificarHumedad(84)).toBe('Alto')
+    expect(clasificarHumedad(70)).toBe('Alto')
+    expect(clasificarHumedad(69)).toBe('Óptimo')
+    expect(clasificarHumedad(40)).toBe('Óptimo')
+    expect(clasificarHumedad(39)).toBe('Bajo')
   })
 })
 
 describe('colorEstado', () => {
-  it('maps estado to a bootstrap-like color token', () => {
-    expect(colorEstado('ALTA')).toBe('danger')
-    expect(colorEstado('NORMAL')).toBe('success')
-    expect(colorEstado('BAJA')).toBe('warning')
+  it('maps estado to a color token', () => {
+    expect(colorEstado('Crítico')).toBe('danger')
+    expect(colorEstado('Alto')).toBe('warning')
+    expect(colorEstado('Óptimo')).toBe('success')
+    expect(colorEstado('Bajo')).toBe('secondary')
   })
 })
 
 describe('mensajeEstado', () => {
   it('returns a message per estado', () => {
-    expect(mensajeEstado('ALTA')).toContain('alta')
-    expect(mensajeEstado('NORMAL')).toContain('normal')
-    expect(mensajeEstado('BAJA')).toContain('baja')
+    expect(mensajeEstado('Crítico')).toContain('crítico')
+    expect(mensajeEstado('Alto')).toContain('elevada')
+    expect(mensajeEstado('Óptimo')).toContain('ideal')
+    expect(mensajeEstado('Bajo')).toContain('baja')
   })
 })
 

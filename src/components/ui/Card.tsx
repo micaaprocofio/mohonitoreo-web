@@ -1,10 +1,12 @@
 import { cn } from '../../lib/cn'
 
-export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export function Card({ className, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        'rounded-3xl bg-white shadow-[0_12px_28px_rgba(15,23,42,0.09)]',
+        'bg-white border border-brand-border rounded-card',
         className,
       )}
       {...props}
@@ -12,6 +14,14 @@ export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   )
 }
 
+export function CardHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('px-5 py-4 border-b border-brand-border', className)} {...props} />
+}
+
 export function CardBody({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('p-6', className)} {...props} />
+  return <div className={cn('p-5', className)} {...props} />
+}
+
+export function CardFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('px-5 py-3 border-t border-brand-border', className)} {...props} />
 }

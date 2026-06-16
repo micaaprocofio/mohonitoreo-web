@@ -1,8 +1,6 @@
 import { useAuth } from '../auth/useAuth'
 import { PageLayout } from '../components/PageLayout'
-import { Card, CardBody } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
-import { Spinner } from '../components/Spinner'
 import { useHistorial } from '../features/lecturas/useHistorial'
 
 export function HistorialPage() {
@@ -11,43 +9,58 @@ export function HistorialPage() {
 
   return (
     <PageLayout>
-      <h2 className="text-2xl font-extrabold text-slate-900">Historial de lecturas</h2>
-      <p className="mt-1 text-slate-500">Últimas {items.length} lecturas registradas.</p>
+      <div className="bg-white border border-brand-borderStrong rounded-xl shadow-panel overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-brand-border">
+          <div>
+            <h1 className="text-lg font-bold tracking-tight text-brand-ink">Historial de lecturas</h1>
+            <p className="text-sm text-brand-muted mt-0.5">
+              {items.length > 0 ? `${items.length} registros encontrados` : 'Sin registros disponibles'}
+            </p>
+          </div>
+        </div>
 
-      <Card className="mt-6 overflow-hidden">
-        <CardBody className="p-0">
-          {loading ? (
-            <Spinner />
-          ) : items.length === 0 ? (
-            <p className="p-6 text-center text-slate-500">No hay lecturas registradas.</p>
-          ) : (
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-slate-500">
-                <tr>
-                  <th className="px-6 py-3 font-semibold">Fecha y hora</th>
-                  <th className="px-6 py-3 font-semibold">Temperatura</th>
-                  <th className="px-6 py-3 font-semibold">Humedad</th>
-                  <th className="px-6 py-3 font-semibold">Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((it, i) => (
-                  <tr key={i} className="border-t border-slate-100">
-                    <td className="px-6 py-3 text-slate-700">
-                      {it.timestamp ? it.timestamp.toLocaleString('es') : '--'}
-                    </td>
-                    <td className="px-6 py-3 text-slate-700">{it.temperatura.toFixed(1)} °C</td>
-                    <td className="px-6 py-3 text-slate-700">{it.humedad.toFixed(1)} %</td>
-                    <td className="px-6 py-3">
-                      <Badge tone={it.color}>{it.estado}</Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-        </CardBody>
-      </Card>
+        {/* Table */}
+        {loading ? (
+          <div className="px-6 py-10 text-center font-mono text-sm text-brand-muted">Cargando...</div>
+        ) : items.length === 0 ? (
+          <div className="px-6 py-10 text-center text-sm text-brand-muted">No hay lecturas registradas.</div>
+        ) : (
+          <div>
+            {/* Column headers */}
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr] px-6 py-3 bg-brand-headerBg font-mono text-[10px] tracking-wider uppercase text-brand-muted">
+              <span>Fecha y hora</span>
+              <span>Temperatura</span>
+              <span>Humedad</span>
+              <span>Estado</span>
+            </div>
+
+            {items.map((it, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-[2fr_1fr_1fr_1fr] items-center px-6 py-3.5 border-t border-brand-border hover:bg-brand-rowHover transition-colors"
+              >
+                <span className="text-sm text-brand-ink">
+                  {it.timestamp
+                    ? it.timestamp.toLocaleString('es-UY', {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
+                    : '--'}
+                </span>
+                <span className="font-mono text-sm text-brand-ink">{it.temperatura.toFixed(1)} °C</span>
+                <span className="font-mono text-sm text-brand-ink">{it.humedad.toFixed(1)} %</span>
+                <span>
+                  <Badge tone={it.color}>{it.estado}</Badge>
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </PageLayout>
   )
 }

@@ -4,7 +4,7 @@ export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInp
   return (
     <input
       className={cn(
-        'w-full rounded-xl border border-slate-300 px-4 py-2.5 text-slate-900 outline-none transition focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30',
+        'w-full rounded-[10px] border border-brand-borderStrong bg-brand-surfaceMid px-3.5 py-3 font-mono text-sm text-brand-ink placeholder:text-brand-placeholder outline-none transition-colors focus:border-brand-accent focus:ring-1 focus:ring-brand-accent',
         className,
       )}
       {...props}
@@ -14,7 +14,10 @@ export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInp
 
 export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
   return (
-    <label className={cn('mb-1 block text-sm font-semibold text-slate-600', className)} {...props} />
+    <label
+      className={cn('mb-1.5 block text-xs font-semibold text-brand-subtle', className)}
+      {...props}
+    />
   )
 }
 
@@ -22,7 +25,7 @@ export function Select({ className, ...props }: React.SelectHTMLAttributes<HTMLS
   return (
     <select
       className={cn(
-        'w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition focus:border-brand-teal focus:ring-2 focus:ring-brand-teal/30',
+        'w-full rounded-[10px] border border-brand-borderStrong bg-brand-surfaceMid px-3.5 py-3 text-sm text-brand-ink outline-none transition-colors focus:border-brand-accent focus:ring-1 focus:ring-brand-accent',
         className,
       )}
       {...props}

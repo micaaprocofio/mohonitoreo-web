@@ -1,4 +1,4 @@
-export type EstadoHumedad = 'ALTA' | 'NORMAL' | 'BAJA'
+export type EstadoHumedad = 'Crítico' | 'Alto' | 'Óptimo' | 'Bajo'
 export type ColorEstado = 'danger' | 'success' | 'warning' | 'secondary'
 
 /** Umbral (en segundos) tras el cual una lectura se considera desactualizada. */
@@ -6,20 +6,23 @@ export const STALE_SEGUNDOS = 60
 
 /** Replica web/app.py: clasificar_humedad. */
 export function clasificarHumedad(humedad: number): EstadoHumedad {
-  if (humedad >= 70) return 'ALTA'
-  if (humedad >= 40) return 'NORMAL'
-  return 'BAJA'
+  if (humedad >= 85) return 'Crítico'
+  if (humedad >= 70) return 'Alto'
+  if (humedad >= 40) return 'Óptimo'
+  return 'Bajo'
 }
 
 /** Replica web/app.py: mensaje_estado. */
 export function mensajeEstado(estado: EstadoHumedad): string {
   switch (estado) {
-    case 'ALTA':
-      return '⚠️ Humedad alta: se recomienda ventilación.'
-    case 'NORMAL':
-      return '✅ Humedad normal: ambiente estable.'
-    case 'BAJA':
-      return '⚠️ Humedad baja: se recomienda revisar el ambiente.'
+    case 'Crítico':
+      return 'Humedad en nivel crítico. Se requiere ventilación urgente.'
+    case 'Alto':
+      return 'Humedad elevada: se recomienda ventilación.'
+    case 'Óptimo':
+      return 'Temperatura y humedad dentro del rango ideal de operación.'
+    case 'Bajo':
+      return 'Humedad baja: se recomienda revisar el ambiente.'
     default:
       return 'Estado desconocido.'
   }
@@ -28,12 +31,14 @@ export function mensajeEstado(estado: EstadoHumedad): string {
 /** Replica web/app.py: color_estado. */
 export function colorEstado(estado: EstadoHumedad): ColorEstado {
   switch (estado) {
-    case 'ALTA':
+    case 'Crítico':
       return 'danger'
-    case 'NORMAL':
-      return 'success'
-    case 'BAJA':
+    case 'Alto':
       return 'warning'
+    case 'Óptimo':
+      return 'success'
+    case 'Bajo':
+      return 'secondary'
     default:
       return 'secondary'
   }
@@ -41,9 +46,9 @@ export function colorEstado(estado: EstadoHumedad): ColorEstado {
 
 /** Ícono mostrado en el dashboard según el estado. */
 export function iconoEstado(estado: EstadoHumedad): string {
-  if (estado === 'NORMAL') return '✅'
-  if (estado === 'ALTA' || estado === 'BAJA') return '⚠️'
-  return '❔'
+  if (estado === 'Óptimo') return '✅'
+  if (estado === 'Crítico') return '🔴'
+  return '⚠️'
 }
 
 /**
