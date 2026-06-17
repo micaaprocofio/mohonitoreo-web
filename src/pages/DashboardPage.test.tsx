@@ -28,7 +28,7 @@ describe('DashboardPage', () => {
       lectura: {
         temperatura: 22.5,
         humedad: 75,
-        estado: 'ALTA',
+        estado: 'Alto',
         color: 'danger',
         mensaje: '⚠️ Humedad alta',
         icono: '⚠️',
@@ -39,7 +39,7 @@ describe('DashboardPage', () => {
     renderPage()
     expect(screen.getByText('22.5 °C')).toBeInTheDocument()
     expect(screen.getByText('75.0 %')).toBeInTheDocument()
-    expect(screen.getByText('ALTA')).toBeInTheDocument()
+    expect(screen.getByText('Alto')).toBeInTheDocument()
   })
 
   it('shows the no-data warning when there are no readings', () => {
