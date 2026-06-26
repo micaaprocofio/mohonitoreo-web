@@ -39,6 +39,6 @@ describe('SignupPage', () => {
     await userEvent.click(screen.getByRole('button', { name: /crear cuenta/i }))
 
     await waitFor(() => expect(mocks.signup).toHaveBeenCalledWith('999', 'Ana', 'secret1'))
-    expect(await screen.findByText(/cuenta creada/i)).toBeInTheDocument()
+    expect(await screen.findByRole('alert')).toHaveTextContent(/cuenta creada/i)
   })
 })

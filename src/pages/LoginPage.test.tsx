@@ -30,7 +30,7 @@ describe('LoginPage', () => {
     renderPage()
     await userEvent.type(screen.getByLabelText(/cédula/i), '12345')
     await userEvent.type(screen.getByLabelText(/contraseña/i), 'secret1')
-    await userEvent.click(screen.getByRole('button', { name: /iniciar sesión/i }))
+    await userEvent.click(screen.getByRole('button', { name: /entrar/i }))
 
     await waitFor(() => expect(mocks.login).toHaveBeenCalledWith('12345', 'secret1'))
     expect(mocks.navigate).toHaveBeenCalledWith('/dashboard')
@@ -41,7 +41,7 @@ describe('LoginPage', () => {
     renderPage()
     await userEvent.type(screen.getByLabelText(/cédula/i), '12345')
     await userEvent.type(screen.getByLabelText(/contraseña/i), 'wrong')
-    await userEvent.click(screen.getByRole('button', { name: /iniciar sesión/i }))
+    await userEvent.click(screen.getByRole('button', { name: /entrar/i }))
 
     await waitFor(() =>
       expect(screen.getByText(/cédula o contraseña incorrecta/i)).toBeInTheDocument(),

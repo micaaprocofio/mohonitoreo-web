@@ -59,3 +59,14 @@ export function estaDesactualizado(timestamp: Date, now: Date = new Date()): boo
   const segundos = (now.getTime() - timestamp.getTime()) / 1000
   return segundos > STALE_SEGUNDOS
 }
+
+/**
+ * Parsea un timestamp de Supabase como UTC. La columna `timestamp` se guarda
+ * sin zona horaria, así que si el string no trae offset (sin "Z" ni "+hh:mm")
+ * hay que agregarle "Z" a mano: si no, el navegador lo interpreta como hora
+ * local y la fecha queda corrida por el offset del usuario.
+ */
+export function parseTimestampUtc(raw: string): Date {
+  const tieneOffset = /Z$|[+-]\d{2}:?\d{2}$/.test(raw)
+  return new Date(tieneOffset ? raw : `${raw}Z`)
+}

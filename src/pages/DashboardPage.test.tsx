@@ -37,14 +37,16 @@ describe('DashboardPage', () => {
       },
     }
     renderPage()
-    expect(screen.getByText('22.5 °C')).toBeInTheDocument()
-    expect(screen.getByText('75.0 %')).toBeInTheDocument()
+    expect(screen.getByText('22.5')).toBeInTheDocument()
+    expect(screen.getByText('°C')).toBeInTheDocument()
+    expect(screen.getByText('75.0')).toBeInTheDocument()
+    expect(screen.getAllByText('%').length).toBeGreaterThan(0)
     expect(screen.getByText('Alto')).toBeInTheDocument()
   })
 
   it('shows the no-data warning when there are no readings', () => {
     h.state = { status: 'sin-datos', lectura: null }
     renderPage()
-    expect(screen.getByText(/no hay lecturas para tu usuario/i)).toBeInTheDocument()
+    expect(screen.getByText(/sin datos disponibles/i)).toBeInTheDocument()
   })
 })

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
-import { clasificarHumedad, colorEstado, type ColorEstado, type EstadoHumedad } from './estado'
+import { clasificarHumedad, colorEstado, parseTimestampUtc, type ColorEstado, type EstadoHumedad } from './estado'
 
 export interface HistorialItem {
   temperatura: number
@@ -63,7 +63,7 @@ export function useHistorial(authUserId: string | undefined): HistorialState {
           humedad,
           estado,
           color: colorEstado(estado),
-          timestamp: r.timestamp ? new Date(r.timestamp) : null,
+          timestamp: r.timestamp ? parseTimestampUtc(r.timestamp) : null,
         }
       })
       setItems(mapped)

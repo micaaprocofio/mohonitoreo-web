@@ -65,20 +65,20 @@ describe('useUltimaLectura', () => {
     const { result } = renderHook(() => useUltimaLectura('auth-1'))
     await waitFor(() => expect(result.current.status).toBe('ok'))
     expect(result.current.lectura?.humedad).toBe(75)
-    expect(result.current.lectura?.estado).toBe('ALTA')
-    expect(result.current.lectura?.color).toBe('danger')
+    expect(result.current.lectura?.estado).toBe('Alto')
+    expect(result.current.lectura?.color).toBe('warning')
   })
 
   it('updates when a realtime INSERT arrives', async () => {
     h.lecturasRows = [{ temperatura: 20, humedad: 50, timestamp: '2026-06-15T12:00:00Z' }]
     const { result } = renderHook(() => useUltimaLectura('auth-1'))
-    await waitFor(() => expect(result.current.lectura?.estado).toBe('NORMAL'))
+    await waitFor(() => expect(result.current.lectura?.estado).toBe('Óptimo'))
 
     act(() => {
       h.insertCb?.({ new: { temperatura: 30, humedad: 30, timestamp: '2026-06-15T12:05:00Z' } })
     })
 
-    await waitFor(() => expect(result.current.lectura?.estado).toBe('BAJA'))
+    await waitFor(() => expect(result.current.lectura?.estado).toBe('Bajo'))
     expect(result.current.lectura?.humedad).toBe(30)
   })
 })

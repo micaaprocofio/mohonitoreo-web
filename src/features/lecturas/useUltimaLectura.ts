@@ -7,6 +7,7 @@ import {
   estaDesactualizado,
   iconoEstado,
   mensajeEstado,
+  parseTimestampUtc,
   type ColorEstado,
   type EstadoHumedad,
 } from './estado'
@@ -37,7 +38,7 @@ function toCruda(row: { temperatura: number; humedad: number; timestamp: string 
   return {
     temperatura: Number(row.temperatura),
     humedad: Number(row.humedad),
-    timestamp: new Date(row.timestamp ?? Date.now()),
+    timestamp: row.timestamp ? parseTimestampUtc(row.timestamp) : new Date(),
   }
 }
 

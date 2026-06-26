@@ -60,7 +60,6 @@ export function SignupPage() {
                 placeholder="0.000.000-0"
                 value={cedula}
                 onChange={(e) => setCedula(e.target.value)}
-                required
               />
             </div>
 
@@ -71,7 +70,6 @@ export function SignupPage() {
                 placeholder="Nombre y apellido"
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
-                required
               />
             </div>
 
@@ -83,8 +81,6 @@ export function SignupPage() {
                 placeholder="Mínimo 6 caracteres"
                 value={contrasena}
                 onChange={(e) => setContrasena(e.target.value)}
-                required
-                minLength={6}
               />
             </div>
 
