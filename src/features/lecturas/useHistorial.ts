@@ -15,11 +15,20 @@ export interface HistorialState {
   items: HistorialItem[]
 }
 
-const LIMITE = 100
+export interface HistorialFiltros {
+  limite: number
+  desde?: Date
+}
 
-export function useHistorial(authUserId: string | undefined): HistorialState {
+const FILTROS_DEFAULT: HistorialFiltros = { limite: 100 }
+
+export function useHistorial(
+  authUserId: string | undefined,
+  filtros: HistorialFiltros = FILTROS_DEFAULT,
+): HistorialState {
   const [items, setItems] = useState<HistorialItem[]>([])
   const [loading, setLoading] = useState(true)
+  const { limite, desde } = filtros
 
   useEffect(() => {
     if (!authUserId) return
@@ -42,12 +51,18 @@ export function useHistorial(authUserId: string | undefined): HistorialState {
         return
       }
 
-      const { data: rows } = await supabase
+      let query = supabase
         .from('lecturas')
         .select('temperatura, humedad, timestamp')
         .eq('usuario_id', usuarioId)
         .order('timestamp', { ascending: false })
-        .limit(LIMITE)
+        .limit(limite)
+
+      if (desde) {
+        query = query.gte('timestamp', desde.toISOString())
+      }
+
+      const { data: rows } = await query
 
       if (!active) return
       const typedRows = (rows ?? []) as Array<{
@@ -74,7 +89,7 @@ export function useHistorial(authUserId: string | undefined): HistorialState {
     return () => {
       active = false
     }
-  }, [authUserId])
+  }, [authUserId, limite, desde])
 
   return { loading, items }
 }
