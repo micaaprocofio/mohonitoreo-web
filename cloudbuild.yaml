@@ -1,0 +1,62 @@
+steps:
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: Create-repo
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud artifacts repositories describe mohonitoreo-web \
+          --location=${_REGION} \
+          --project=$PROJECT_ID 2>/dev/null || \
+        gcloud artifacts repositories create mohonitoreo-web \
+          --repository-format=docker \
+          --location=${_REGION} \
+          --project=$PROJECT_ID \
+          --description="mohonitoreo-web Docker images"
+
+  - name: gcr.io/cloud-builders/docker
+    id: Build
+    args:
+      - build
+      - -t
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/mohonitoreo-web/app:$COMMIT_SHA
+      - -t
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/mohonitoreo-web/app:latest
+      - --build-arg
+      - VITE_SUPABASE_URL=${_VITE_SUPABASE_URL}
+      - --build-arg
+      - VITE_SUPABASE_ANON_KEY=${_VITE_SUPABASE_ANON_KEY}
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    id: Push
+    args:
+      - push
+      - --all-tags
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/mohonitoreo-web/app
+
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    id: Deploy
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - mohonitoreo-web
+      - --image
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/mohonitoreo-web/app:$COMMIT_SHA
+      - --region
+      - ${_REGION}
+      - --platform
+      - managed
+      - --allow-unauthenticated
+
+images:
+  - ${_REGION}-docker.pkg.dev/$PROJECT_ID/mohonitoreo-web/app:$COMMIT_SHA
+
+substitutions:
+  _REGION: us-central1
+  _VITE_SUPABASE_URL: ""
+  _VITE_SUPABASE_ANON_KEY: ""
+
+options:
+  logging: CLOUD_LOGGING_ONLY
