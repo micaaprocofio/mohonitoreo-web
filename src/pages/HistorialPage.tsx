@@ -1,6 +1,7 @@
 import { useAuth } from '../auth/useAuth'
 import { PageLayout } from '../components/PageLayout'
 import { Badge } from '../components/ui/Badge'
+import { HistorialChart } from '../features/lecturas/HistorialChart'
 import { useHistorial } from '../features/lecturas/useHistorial'
 
 export function HistorialPage() {
@@ -20,13 +21,14 @@ export function HistorialPage() {
           </div>
         </div>
 
-        {/* Table */}
+        {/* Chart + Table */}
         {loading ? (
           <div className="px-6 py-10 text-center font-mono text-sm text-brand-muted">Cargando...</div>
         ) : items.length === 0 ? (
           <div className="px-6 py-10 text-center text-sm text-brand-muted">No hay lecturas registradas.</div>
         ) : (
           <div>
+            <HistorialChart items={items} />
             {/* Column headers */}
             <div className="grid grid-cols-[2fr_1fr_1fr_1fr] px-6 py-3 bg-brand-headerBg font-mono text-[10px] tracking-wider uppercase text-brand-muted">
               <span>Fecha y hora</span>
