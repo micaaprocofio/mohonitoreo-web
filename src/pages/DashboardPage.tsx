@@ -57,7 +57,6 @@ const HUM_SPARK_PTS = sparkPoints(
 // ── Sub-components ────────────────────────────────────────────────────────────
 interface GaugeCardProps {
   label: string
-  sensor: string
   value: number | null
   unit: string
   max: number
@@ -65,7 +64,7 @@ interface GaugeCardProps {
   sparkPoints: string
 }
 
-function GaugeCard({ label, sensor, value, unit, max, color, sparkPoints }: GaugeCardProps) {
+function GaugeCard({ label, value, unit, max, color, sparkPoints }: GaugeCardProps) {
   const frac = value != null ? Math.max(0.001, Math.min(1, value / max)) : 0.001
   const arcPath = arc(0, frac)
   const displayVal = value != null ? value.toFixed(1) : '--'
@@ -74,7 +73,6 @@ function GaugeCard({ label, sensor, value, unit, max, color, sparkPoints }: Gaug
     <div className="bg-white border border-brand-border rounded-card p-5">
       <div className="flex items-center justify-between mb-1.5">
         <span className="text-sm font-semibold text-brand-subtle">{label}</span>
-        <span className="font-mono text-[10px] text-brand-placeholder">{sensor}</span>
       </div>
 
       <div className="relative flex justify-center">
@@ -177,7 +175,6 @@ export function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <GaugeCard
           label="Temperatura"
-          sensor="DHT22 · P8"
           value={hayDatos ? lectura.temperatura : null}
           unit="°C"
           max={50}
@@ -186,7 +183,6 @@ export function DashboardPage() {
         />
         <GaugeCard
           label="Humedad"
-          sensor="DHT22 · P10"
           value={hayDatos ? lectura.humedad : null}
           unit="%"
           max={100}
