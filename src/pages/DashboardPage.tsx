@@ -177,7 +177,7 @@ export function DashboardPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <GaugeCard
           label="Temperatura"
-          sensor="DHT22 · P8"
+          sensor="DHT11 · P8"
           value={hayDatos ? lectura.temperatura : null}
           unit="°C"
           max={50}
@@ -186,7 +186,7 @@ export function DashboardPage() {
         />
         <GaugeCard
           label="Humedad"
-          sensor="DHT22 · P10"
+          sensor="DHT11 · P10"
           value={hayDatos ? lectura.humedad : null}
           unit="%"
           max={100}
